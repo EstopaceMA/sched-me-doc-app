@@ -1,17 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet } from "react-native";
 import { NavigationContainer } from '@react-navigation/native';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Icon from '@expo/vector-icons/FontAwesome5';
+import { createStackNavigator } from '@react-navigation/stack';
 import { BottomNavigation, Text } from 'react-native-paper';
 
-import { AppointmentScreen, HomeScreen } from './src/screens';
+import { AppointmentScreen, HomeScreen, DetailsScreen, ProfileScreen } from './src/screens';
 import COLORS from './src/consts/colors';
 
-export default function App() {
-  const [index, setIndex] = React.useState(0);
-  const [routes] = React.useState([
+const Stack = createStackNavigator();
+
+const BottomTabs = () => {
+  const [index, setIndex] = useState(0);
+  const [routes] = useState([
     { key: 'home', title: 'Home', icon: 'home', color: COLORS.primary },
     { key: 'appointment', title: 'Appointment', icon: 'calendar', color: COLORS.orange },
   ]);
@@ -21,11 +21,35 @@ export default function App() {
   });
   return (
     <BottomNavigation
-      navigationState={{ index, routes }}
-      onIndexChange={setIndex}
-      renderScene={renderScene}
-      shifting={true}
-    />
+        navigationState={{ index, routes }}
+        onIndexChange={setIndex}
+        renderScene={renderScene}
+        shifting={true}
+      />
+  );
+}
+
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen 
+          name="Tabs" 
+          component={BottomTabs} 
+          options={{
+            headerShown:false
+          }}
+        />
+        <Stack.Screen 
+          name="Details" 
+          component={DetailsScreen} 
+          options={{
+            headerShown:false
+          }}
+        />
+        <Stack.Screen name="Profile" component={ProfileScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 

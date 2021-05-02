@@ -12,20 +12,29 @@ import {
   Animated,
 } from 'react-native';
 import Screen from '../components/Screen';
-
+import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import COLORS from '../consts/colors';
 import doctors from '../consts/doctors';
 const {width} = Dimensions.get('screen');
 const cardWidth = width / 1.8;
 
-const HomeScreen = ({navigation}) => {
+function DetailsScreen() {
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>Details Screen</Text>
+    </View>
+  );
+}
+
+const HomeScreen = () => {
   const categories = ['All', 'Popular', 'Top Rated', 'Featured'];
   const [selectedCategoryIndex, setSelectedCategoryIndex] = React.useState(0);
   const [activeCardIndex, setActiveCardIndex] = React.useState(0);
   const scrollX = React.useRef(new Animated.Value(0)).current;
+  const navigation = useNavigation();
 
-  const CategoryList = ({navigation}) => {
+  const CategoryList = () => {
     return (
       <View style={style.categoryListContainer}>
         {categories.map((item, index) => (
@@ -78,7 +87,7 @@ const HomeScreen = ({navigation}) => {
       <TouchableOpacity
         disabled={activeCardIndex != index}
         activeOpacity={1}
-        onPress={() => navigation.navigate('DetailsScreen', doctor)}>
+        onPress={() => navigation.navigate('Details', doctor)}>
         <Animated.View style={{...style.card, transform: [{scale}]}}>
           <Animated.View style={{...style.cardOverLay, opacity}} />
           <View style={style.priceTag}>
