@@ -7,12 +7,13 @@ import Icon from '@expo/vector-icons/FontAwesome5';
 import { BottomNavigation, Text } from 'react-native-paper';
 
 import { AppointmentScreen, HomeScreen } from './src/screens';
+import COLORS from './src/consts/colors';
 
 export default function App() {
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
-    { key: 'home', title: 'Home', icon: 'home', color: "#BADA55" },
-    { key: 'appointment', title: 'Appointment', icon: 'calendar', color: "tomato" },
+    { key: 'home', title: 'Home', icon: 'home', color: COLORS.primary },
+    { key: 'appointment', title: 'Appointment', icon: 'calendar', color: COLORS.orange },
   ]);
   const renderScene = BottomNavigation.SceneMap({
     home: HomeScreen,
