@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { View, Text, StyleSheet } from "react-native";
 import CalendarStrip from 'react-native-calendar-strip';
 import moment from 'moment';
+import firebase from '../auth/firebase';
 
 import Screen from '../components/Screen';
 
@@ -10,6 +11,8 @@ const onDateSelected = (date) => {
 }
 
 const AppointmentScreen = () => {
+    const [userID] = useState(firebase.auth().currentUser.uid);
+
     return (
       <Screen>
         <View style={styles.container}>
@@ -27,6 +30,7 @@ const AppointmentScreen = () => {
             onDateSelected={onDateSelected}
             selectedDate={moment()}
           />
+          <Text>{userID}</Text>
         </View>
       </Screen>
     );

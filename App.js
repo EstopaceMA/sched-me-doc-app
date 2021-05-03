@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { BottomNavigation, Text } from 'react-native-paper';
 
-import { AppointmentScreen, HomeScreen, DetailsScreen, ProfileScreen } from './src/screens';
+import { AppointmentScreen, HomeScreen, DetailsScreen, ProfileScreen, SignUpScreen } from './src/screens';
 import COLORS from './src/consts/colors';
 
 const Stack = createStackNavigator();
@@ -48,6 +48,7 @@ export default function App() {
           }}
         />
         <Stack.Screen name="Profile" component={ProfileScreen} />
+        <Stack.Screen name="SignUp" component={SignUpScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

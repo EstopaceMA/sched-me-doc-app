@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   View,
   Image,
-  Animated,
+  Animated
 } from 'react-native';
 import Screen from '../components/Screen';
 import { useNavigation } from '@react-navigation/native';
@@ -18,14 +18,6 @@ import COLORS from '../consts/colors';
 import doctors from '../consts/doctors';
 const {width} = Dimensions.get('screen');
 const cardWidth = width / 1.8;
-
-function DetailsScreen() {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Details Screen</Text>
-    </View>
-  );
-}
 
 const HomeScreen = () => {
   const categories = ['All', 'Popular', 'Top Rated', 'Featured'];
@@ -141,7 +133,7 @@ const HomeScreen = () => {
             zIndex: 1,
             flexDirection: 'row',
           }}>
-          <Icon name="star" size={15} color={COLORS.orange} />
+            <Icon name="star" size={15} color={COLORS.orange} />
           <Text style={{color: COLORS.white, fontWeight: 'bold', fontSize: 15}}>
             5.0
           </Text>
@@ -172,7 +164,12 @@ const HomeScreen = () => {
             </Text>
           </View>
         </View>
-        <Icon name="person-outline" size={38} color={COLORS.grey} />
+          <TouchableOpacity
+            activeOpacity={1}
+            onPress={() => navigation.navigate('SignUp')}
+          >
+            <Icon name="person-outline" size={38} color={COLORS.grey} />
+          </TouchableOpacity>
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={style.searchInputContainer}>
