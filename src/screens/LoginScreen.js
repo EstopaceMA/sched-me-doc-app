@@ -1,43 +1,40 @@
 import React, { useState } from 'react';
 import { 
-  StyleSheet, 
-  Text, 
-  View, 
-  TextInput, 
-  Button, 
-  Alert, 
-  ActivityIndicator 
+    StyleSheet, 
+    Text, 
+    View, 
+    TextInput, 
+    Button, 
+    Alert, 
+    ActivityIndicator 
 } from 'react-native';
 import firebase from '../auth/firebase';
 
-const SignUpScreen = ({navigation}) => {
-    const [displayName, setDisplayName] = useState('');
+
+const LoginScreen = ({navigation}) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
-    const registerUser = () => {
-        if(email === '' && password === '') {
-            Alert.alert('Enter details to signup!')
-        } else {
-            setIsLoading(true);
-            firebase
-                .auth()
-                .createUserWithEmailAndPassword(email, password)
-                .then((res) => {
-                    res.user.updateProfile({
-                    displayName: displayName
-                });
-                console.log('User registered successfully!');
-                setIsLoading(false);
-                setDisplayName('');
-                setEmail('');
-                setPassword('');
-                })
-            .catch(error => console.log(error))
-        }
+  userLogin = () => {
+    if(email === '' && password === '') {
+      Alert.alert('Enter details to signin!')
+    } else {
+      setIsLoading(true);
+      firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .then((res) => {
+        console.log(res)
+        console.log('User logged-in successfully!')
+        setIsLoading(false);
+        setEmail('');
+        setPassword('');
+        navigation.navigate('Tabs')
+      })
+      .catch(error => {console.log(error)})
     }
-
+  }
 
     if(isLoading){
       return(
@@ -47,14 +44,7 @@ const SignUpScreen = ({navigation}) => {
       )
     }    
     return (
-      
       <View style={styles.container}>  
-        <TextInput
-          style={styles.inputStyle}
-          placeholder="Name"
-          value={displayName}
-          onChangeText={(val) => setDisplayName(val)}
-        />      
         <TextInput
           style={styles.inputStyle}
           placeholder="Email"
@@ -71,14 +61,14 @@ const SignUpScreen = ({navigation}) => {
         />   
         <Button
           color="#3740FE"
-          title="Signup"
-          onPress={() => registerUser()}
-        />
+          title="Signin"
+          onPress={() => userLogin()}
+        />   
 
         <Text 
           style={styles.loginText}
-          onPress={() => {navigation.navigate('Login')}}>
-          Already Registered? Click here to login
+          onPress={() => navigation.navigate('SignUp')}>
+          Don't have account? Click here to signup
         </Text>                          
       </View>
     );
@@ -119,4 +109,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default SignUpScreen;
+export default LoginScreen;

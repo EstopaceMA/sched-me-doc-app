@@ -3,11 +3,17 @@ import HomeScreen from './HomeScreen';
 import ProfileScreen from './ProfileScreen';
 import DetailsScreen from './DetailsScreen';
 import SignUpScreen from './SignUpScreen';
+import LoginScreen from './LoginScreen';
+import MainScreen from './MainScreen';
+import BookAppointmentScreen from './BookAppointmentScreen';
 
 export {
     AppointmentScreen,
     HomeScreen,
     DetailsScreen,
     ProfileScreen,
-    SignUpScreen
+    SignUpScreen,
+    LoginScreen,
+    MainScreen,
+    BookAppointmentScreen
 }

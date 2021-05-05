@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import COLORS from '../consts/colors';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import AppButton from '../components/AppButton';
 
 const DetailsScreen = ({navigation, route}) => {
   const item = route.params;
@@ -109,9 +110,7 @@ const DetailsScreen = ({navigation, route}) => {
           </View>
         </View>
         <View style={style.btn}>
-          <Text style={{color: COLORS.white, fontSize: 18, fontWeight: 'bold'}}>
-            Book Now
-          </Text>
+          <AppButton title="Book Now" onPress={() => navigation.navigate('BookAppointment')}/>
         </View>
       </View>
     </ScrollView>
@@ -120,11 +119,9 @@ const DetailsScreen = ({navigation, route}) => {
 
 const style = StyleSheet.create({
   btn: {
-    height: 55,
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 40,
-    backgroundColor: COLORS.primary,
     marginHorizontal: 20,
     borderRadius: 10,
   },

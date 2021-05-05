@@ -3,26 +3,28 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
 import Screen from '../components/Screen';
 import COLORS from '../consts/colors';
-import firebase from '../auth/firebase';
 
-const ProfileScreen = ({navigation}) => {
-  const signOut = () => {
-    firebase.auth().signOut().then(() => {
-      navigation.navigate('Login')
-    })
-    .catch(error => console.log(error))
-  }  
-
+const MainScreen = ({navigation}) => {
   return (
     <Screen>
       <View style={styles.container}>
         <TouchableOpacity
           activeOpacity={1}
-          onPress={() => signOut()}
+          onPress={() => {navigation.navigate('Tabs')}}
         >
           <View style={styles.btn}>
               <Text style={{color: COLORS.white, fontSize: 18, fontWeight: 'bold'}}>
-                Log Out
+                Patient
+              </Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity
+          activeOpacity={1}
+          onPress={() => {}}
+        >
+          <View style={styles.btn}>
+              <Text style={{color: COLORS.white, fontSize: 18, fontWeight: 'bold'}}>
+                Doctor
               </Text>
           </View>
         </TouchableOpacity>
@@ -32,7 +34,10 @@ const ProfileScreen = ({navigation}) => {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent:"center" },
+  container: { 
+    flex: 1, 
+    justifyContent:"center" 
+  },
   btn: {
     height: 55,
     justifyContent: 'center',
@@ -44,4 +49,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default ProfileScreen;
+export default MainScreen;

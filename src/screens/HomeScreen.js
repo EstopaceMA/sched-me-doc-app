@@ -166,7 +166,7 @@ const HomeScreen = () => {
         </View>
           <TouchableOpacity
             activeOpacity={1}
-            onPress={() => navigation.navigate('SignUp')}
+            onPress={() => navigation.navigate('Profile')}
           >
             <Icon name="person-outline" size={38} color={COLORS.grey} />
           </TouchableOpacity>
