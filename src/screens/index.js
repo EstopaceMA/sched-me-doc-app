@@ -6,6 +6,7 @@ import SignUpScreen from './SignUpScreen';
 import LoginScreen from './LoginScreen';
 import MainScreen from './MainScreen';
 import BookAppointmentScreen from './BookAppointmentScreen';
+import DoctorListScreen from './DoctorListScreen';
 
 export {
     AppointmentScreen,
@@ -15,5 +16,6 @@ export {
     SignUpScreen,
     LoginScreen,
     MainScreen,
-    BookAppointmentScreen
+    BookAppointmentScreen, 
+    DoctorListScreen
 }

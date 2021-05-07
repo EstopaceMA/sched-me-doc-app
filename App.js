@@ -2,9 +2,17 @@ import React, { useState, useEffect,  } from "react";
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { BottomNavigation } from 'react-native-paper';
-import { isSignedIn } from './src/auth/auth';
-
-import { AppointmentScreen, HomeScreen, DetailsScreen, ProfileScreen, SignUpScreen, LoginScreen, MainScreen, BookAppointmentScreen } from './src/screens';
+import { 
+  AppointmentScreen, 
+  HomeScreen, 
+  DetailsScreen, 
+  ProfileScreen, 
+  SignUpScreen, 
+  LoginScreen, 
+  MainScreen, 
+  BookAppointmentScreen, 
+  DoctorListScreen 
+} from './src/screens';
 import COLORS from './src/consts/colors';
 
 const Stack = createStackNavigator();
@@ -55,8 +63,9 @@ export default function App() {
             headerShown:false
           }}
         />
+        <Stack.Screen name="DoctorList" component={DoctorListScreen} options={{ title: 'Select a Doctor' }}/>
         <Stack.Screen name="Profile" component={ProfileScreen} />
-        <Stack.Screen name="BookAppointment" component={BookAppointmentScreen} />
+        <Stack.Screen name="BookAppointment" component={BookAppointmentScreen} options={{ title: 'Book an Appointment' }}/>
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="SignUp" component={SignUpScreen} />
 

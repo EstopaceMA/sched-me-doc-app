@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, TouchableOpacity, Text, StyleSheet, Modal, Dimensions} from 'react-native';
 import {Agenda} from 'react-native-calendars';
 import {Card, Avatar, Colors} from 'react-native-paper';
@@ -7,9 +7,23 @@ import Screen from '../components/Screen';
 import { FAB } from 'react-native-paper';
 import COLORS from '../consts/colors';
 import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
 const AppointmentScreen = () => {
   const navigation = useNavigation();
   const today = moment().format("YYYY-MM-DD");
+
+  useEffect(() => {
+    const getData = async () => {  
+      await axios.get("https://us-central1-sched-me-doc.cloudfunctions.net/user/")  
+      .then(res => {  
+        console.log(res.data)  
+      })  
+      .catch(err => {  
+        console.log(err)  
+      });  
+    }  
+    getData()
+  }, []);
 
   const renderItem = (item) => {
     return (
@@ -50,7 +64,7 @@ const AppointmentScreen = () => {
       <FAB
         style={styles.fab}
         icon="plus"
-        onPress={() => navigation.navigate('BookAppointment')}
+        onPress={() => navigation.navigate('DoctorList')}
         color={COLORS.white}
       />
     </Screen>
