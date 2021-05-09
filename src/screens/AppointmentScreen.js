@@ -1,29 +1,36 @@
 import React, {useState, useEffect} from 'react';
-import {View, TouchableOpacity, Text, StyleSheet, Modal, Dimensions} from 'react-native';
+import {View, TouchableOpacity, Text, StyleSheet} from 'react-native';
 import {Agenda} from 'react-native-calendars';
-import {Card, Avatar, Colors} from 'react-native-paper';
+import {Card, Avatar} from 'react-native-paper';
 import moment from 'moment';
 import Screen from '../components/Screen';
 import { FAB } from 'react-native-paper';
 import COLORS from '../consts/colors';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
+
 const AppointmentScreen = () => {
   const navigation = useNavigation();
   const today = moment().format("YYYY-MM-DD");
+  const [date, setDate] = useState(moment().format("YYYY-MM-DD"));
 
-  useEffect(() => {
-    const getData = async () => {  
-      await axios.get("https://us-central1-sched-me-doc.cloudfunctions.net/user/")  
-      .then(res => {  
-        console.log(res.data)  
-      })  
-      .catch(err => {  
-        console.log(err)  
-      });  
-    }  
-    getData()
-  }, []);
+  // useEffect(() => {
+  //   const getData = async () => {  
+  //     await axios.get("https://us-central1-sched-me-doc.cloudfunctions.net/user/")  
+  //     .then(res => {  
+  //       console.log(res.data)  
+  //     })  
+  //     .catch(err => {  
+  //       console.log(err)  
+  //     });  
+  //   }  
+  //   getData()
+  // }, []);
+
+  const onDayPress = (day) => {
+    setDate(day.dateString);
+    console.log(day.dateString);
+  }
 
   const renderItem = (item) => {
     return (
@@ -56,9 +63,10 @@ const AppointmentScreen = () => {
             '2012-05-24': [],
             '2012-05-25': [{name: 'item 3 - any js object'}, {name: 'any js object'}]
           }}
-          selected={moment().format("YYYY-MM-DD")}
+          selected={date}
           renderItem={renderItem}
           minDate={today}
+          onDayPress={(day)=>{onDayPress(day)}}
         />
       </View>
       <FAB

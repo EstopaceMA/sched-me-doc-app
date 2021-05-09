@@ -5,15 +5,16 @@ import {
     Image, 
     Animated, 
     Text, 
-    View, 
-    Dimensions,
-    ActivityIndicator
+    View,
+    ActivityIndicator,
+    TouchableOpacity
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import faker from 'faker'
 import axios from 'axios';
 
 
-//Generate Fake Data
+// Generate Fake Data
 // faker.seed(10);
 // const DATA = [...Array(10).keys()].map((_, i) => {
 //     return {
@@ -24,12 +25,12 @@ import axios from 'axios';
 //         email: faker.internet.email(),
 //     };
 // });
-
 const SPACING = 20;
 const AVATAR_SIZE = 70;
 const ITEM_SIZE = AVATAR_SIZE + SPACING * 3;
 
 const DoctorListScreen = () => {
+    const navigation = useNavigation();
     const scrollY = React.useRef(new Animated.Value(0)).current;
     const [docData, setDocData] = useState([]); 
     const [isLoading, setIsLoading] = useState(false);
@@ -54,6 +55,36 @@ const DoctorListScreen = () => {
         setIsLoading(false);
     },[])
 
+    const Item = ({index, item}) => {
+        const inputRange = [
+            -1,
+            0,
+            ITEM_SIZE * index,
+            ITEM_SIZE * (index + 2)
+        ]
+    
+        const scale = scrollY.interpolate({
+            inputRange,
+            outputRange: [1, 1, 1, 0]
+        })
+    
+        return (
+            <TouchableOpacity onPress={() => navigation.navigate('BookAppointment', item)}>
+                <Animated.View style={{...styles.flatListItem, transform:[{scale}]}}>
+                    <Image
+                        source={{ uri: item.image }}
+                        style={styles.image}
+                    />
+                    <View>
+                        <Text style={{ fontSize: 22, fontWeight: '700' }}>{item.name}</Text>
+                        <Text style={{ fontSize: 18, opacity: .7 }}>{item.address}</Text>
+                        <Text style={{ fontSize: 12, opacity: .8, color: '#0099cc' }}>{item.email}</Text>
+                    </View>
+                </Animated.View>
+            </TouchableOpacity>
+        )
+    }
+
     if(isLoading){
         return(
           <View style={styles.preloader}>
@@ -73,32 +104,7 @@ const DoctorListScreen = () => {
                 onScroll={Animated.event([{ nativeEvent: {contentOffset: {y: scrollY}}}],
                     {useNativeDriver: true}
                 )}
-                renderItem={({index,item}) => {
-                    const inputRange = [
-                        -1,
-                        0,
-                        ITEM_SIZE * index,
-                        ITEM_SIZE * (index + 2)
-                    ]
-                
-                    const scale = scrollY.interpolate({
-                        inputRange,
-                        outputRange: [1, 1, 1, 0]
-                    })
-                    return (
-                        <Animated.View style={{...styles.flatListItem, transform:[{scale}]}}>
-                            <Image
-                                source={{ uri: item.image }}
-                                style={styles.image}
-                            />
-                            <View>
-                                <Text style={{ fontSize: 22, fontWeight: '700' }}>{item.name}</Text>
-                                <Text style={{ fontSize: 18, opacity: .7 }}>{item.address}</Text>
-                                <Text style={{ fontSize: 12, opacity: .8, color: '#0099cc' }}>{item.email}</Text>
-                            </View>
-                        </Animated.View>
-                    )
-                }}
+                renderItem={({index,item}) => <Item index={index} item={item}/>}
             >
 
             </Animated.FlatList>

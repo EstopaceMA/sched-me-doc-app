@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import {useSelector, useDispatch} from 'react-redux'
 import { 
     StyleSheet, 
     Text, 
@@ -8,32 +9,52 @@ import {
     Alert, 
     ActivityIndicator 
 } from 'react-native';
-import firebase from '../auth/firebase';
+import axios from 'axios';
+import {setUser} from '../redux/actions';
 
 
-const LoginScreen = ({navigation}) => {
+const LoginScreen = ({navigation, route}) => {
+    const dispatch = useDispatch();
+    const currentUser = useSelector(state => state.currentUser);
+    const [userType] = useState(route.params);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
-  userLogin = () => {
-    if(email === '' && password === '') {
-      Alert.alert('Enter details to signin!')
-    } else {
+  useEffect(() => {
+    console.log(userType);
+    console.log(currentUser);
+  },[]);
+
+  const login = async () => {
+      const params = JSON.stringify({
+        "email": email,
+        "password": password,
+      });
+
+      const url = (userType === 'patient') 
+        ? "https://us-central1-sched-me-doc.cloudfunctions.net/user/login"
+        : "https://us-central1-sched-me-doc.cloudfunctions.net/doctor/login"
+
       setIsLoading(true);
-      firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
-      .then((res) => {
-        console.log(res)
-        console.log('User logged-in successfully!')
+      await axios.post(url, params,{
+            "headers": {
+              "content-type": "application/json",
+          },
+      }).then((res) => {
         setIsLoading(false);
-        setEmail('');
-        setPassword('');
-        navigation.navigate('Tabs')
-      })
-      .catch(error => {console.log(error)})
-    }
+        res.data.type = userType;
+        console.log(res.data);
+        dispatch(setUser(res.data));
+        if(Object.keys(res.data).length > 0) {
+          navigation.navigate((userType === "patient") ? "PatientTabs" : "DoctorTabs", res.data);
+        } else {
+          Alert.alert("Invalid email and password!");
+        }
+      }).catch((err) => {
+        console.log(err);
+      });
+
   }
 
     if(isLoading){
@@ -62,7 +83,7 @@ const LoginScreen = ({navigation}) => {
         <Button
           color="#3740FE"
           title="Signin"
-          onPress={() => userLogin()}
+          onPress={() => login()}
         />   
 
         <Text 

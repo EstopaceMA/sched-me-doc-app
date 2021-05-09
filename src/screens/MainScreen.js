@@ -10,7 +10,7 @@ const MainScreen = ({navigation}) => {
       <View style={styles.container}>
         <TouchableOpacity
           activeOpacity={1}
-          onPress={() => {navigation.navigate('Tabs')}}
+          onPress={() => {navigation.navigate('Login', 'patient')}}
         >
           <View style={styles.btn}>
               <Text style={{color: COLORS.white, fontSize: 18, fontWeight: 'bold'}}>
@@ -20,7 +20,7 @@ const MainScreen = ({navigation}) => {
         </TouchableOpacity>
         <TouchableOpacity
           activeOpacity={1}
-          onPress={() => {}}
+          onPress={() => {navigation.navigate('Login', 'doctor')}}
         >
           <View style={styles.btn}>
               <Text style={{color: COLORS.white, fontSize: 18, fontWeight: 'bold'}}>
