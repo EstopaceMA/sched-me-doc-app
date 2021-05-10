@@ -9,27 +9,18 @@ import {
     ActivityIndicator,
     TouchableOpacity
 } from 'react-native';
+import Screen from '../../components/Screen';
 import { useNavigation } from '@react-navigation/native';
-import faker from 'faker';
+import COLORS from '../../consts/colors';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+import faker from 'faker'
 import axios from 'axios';
 
-
-// Generate Fake Data
-// faker.seed(10);
-// const DATA = [...Array(10).keys()].map((_, i) => {
-//     return {
-//         key: Math.random(10),
-//         image: `https://randomuser.me/api/portraits/${faker.helpers.randomize(['women', 'men'])}/${faker.datatype.number(10)}.jpg`,
-//         name: faker.name.findName(),
-//         jobTitle: faker.name.jobTitle(),
-//         email: faker.internet.email(),
-//     };
-// });
 const SPACING = 20;
 const AVATAR_SIZE = 70;
 const ITEM_SIZE = AVATAR_SIZE + SPACING * 3;
 
-const DoctorListScreen = () => {
+const DoctorHomeScreen = () => {
     const navigation = useNavigation();
     const scrollY = React.useRef(new Animated.Value(0)).current;
     const [docData, setDocData] = useState([]); 
@@ -45,7 +36,7 @@ const DoctorListScreen = () => {
                     image: `https://randomuser.me/api/portraits/${faker.helpers.randomize(['women', 'men'])}/${faker.datatype.number(60)}.jpg`
                 }));
                 setDocData(data); 
-            })  
+            })
             .catch(err => {  
               console.log(err)  
             });
@@ -78,7 +69,12 @@ const DoctorListScreen = () => {
                     <View>
                         <Text style={{ fontSize: 22, fontWeight: '700' }}>{item.name}</Text>
                         <Text style={{ fontSize: 18, opacity: .7 }}>{item.address}</Text>
-                        <Text style={{ fontSize: 12, opacity: .8, color: '#0099cc' }}>{item.email}</Text>
+                        <Text style={{ fontSize: 12, opacity: .8, color: COLORS.primary }}>{item.email}</Text>
+                    </View>
+                    <View style={{ flex:1, alignItems:"flex-end" }}>
+                        <Icon name="calendar-alt" size={25} color={COLORS.primary} />
+                        <Text style={{ fontSize: 14, opacity: .7 }}>{"2021-05-15"}</Text>
+                        <Text style={{ fontSize: 18 }}>{"10:00AM"}</Text>
                     </View>
                 </Animated.View>
             </TouchableOpacity>
@@ -93,26 +89,29 @@ const DoctorListScreen = () => {
         )
     }
     return (
-        <View style={{flex: 1, backgroundColor: '#fff'}}>
-            <Animated.FlatList
-                contentContainerStyle={{
-                    padding: SPACING,
-                    paddingTop: StatusBar.currentHeight || 42
-                }}
-                data={docData}
-                keyExtractor={item => item.id}
-                onScroll={Animated.event([{ nativeEvent: {contentOffset: {y: scrollY}}}],
-                    {useNativeDriver: true}
-                )}
-                renderItem={({index,item}) => <Item index={index} item={item}/>}
-            >
+      <Screen>
+          <View style={{ padding: 10 }}>
+            <Text style={{ fontSize: 20, fontWeight: "bold", color: COLORS.primary }}>Upcoming Appointments</Text>
+          </View>
+          <Animated.FlatList
+              contentContainerStyle={{
+                  paddingLeft: SPACING,
+                  paddingRight: SPACING
+              }}
+              data={docData}
+              keyExtractor={item => item.id}
+              onScroll={Animated.event([{ nativeEvent: {contentOffset: {y: scrollY}}}],
+                  {useNativeDriver: true}
+              )}
+              renderItem={({index,item}) => <Item index={index} item={item}/>}
+          >
 
-            </Animated.FlatList>
-        </View>
+          </Animated.FlatList>
+      </Screen>
     )
 }
 
-export default DoctorListScreen;
+export default DoctorHomeScreen;
 
 const styles = StyleSheet.create({
     flatListItem: {

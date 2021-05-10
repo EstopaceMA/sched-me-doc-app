@@ -4,6 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { BottomNavigation } from 'react-native-paper';
 import {Provider} from 'react-redux';
 import {store} from './src/redux';
+import COLORS from './src/consts/colors';
 
 import { 
   AppointmentScreen, 
@@ -16,7 +17,13 @@ import {
   BookAppointmentScreen, 
   DoctorListScreen 
 } from './src/screens';
-import COLORS from './src/consts/colors';
+
+import {
+  DoctorHomeScreen, 
+  DoctorAccountScreen,
+  DoctorWorkScheduleScreen,
+  DoctorSetWorkSchedScreen
+} from './src/screens/doctor_screens';
 
 const Stack = createStackNavigator();
 
@@ -47,10 +54,12 @@ export default function App() {
     const [routes] = useState([
       { key: 'home', title: 'Home', icon: 'home', color: COLORS.primary },
       { key: 'appointment', title: 'Appointment', icon: 'calendar', color: COLORS.orange },
+      { key: 'profile', title: 'Profile', icon: 'account-details', color: COLORS.primary },
     ]);
     const renderScene = BottomNavigation.SceneMap({
-      home: HomeScreen,
-      appointment: AppointmentScreen
+      home: DoctorHomeScreen,
+      appointment: AppointmentScreen,
+      profile: DoctorAccountScreen
     });
     return (
       <BottomNavigation
@@ -61,8 +70,6 @@ export default function App() {
         />
     );
   }
-
-  
 
   return (
     <Provider store={store}>
@@ -90,7 +97,26 @@ export default function App() {
               title: "Sched Mo Doc",
               headerLeft: null
             }}
-            
+          />
+          <Stack.Screen 
+            name="DocWorkSched" 
+            component={DoctorWorkScheduleScreen}
+            options={{
+              title: "Working Schedule",
+              headerStyle: {
+                backgroundColor: COLORS.primary
+              }
+            }}
+          />
+          <Stack.Screen 
+            name="DocSetWorkSched" 
+            component={DoctorSetWorkSchedScreen}
+            options={{
+              title: "Set Working Time",
+              headerStyle: {
+                backgroundColor: COLORS.primary
+              }
+            }}
           />
           <Stack.Screen 
             name="Details" 
@@ -104,7 +130,6 @@ export default function App() {
           <Stack.Screen name="BookAppointment" component={BookAppointmentScreen} options={{ title: 'Book an Appointment' }}/>
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="SignUp" component={SignUpScreen} />
-
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

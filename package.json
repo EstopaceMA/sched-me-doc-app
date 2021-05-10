@@ -8,6 +8,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@react-native-community/datetimepicker": "^3.4.7",
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/bottom-tabs": "^5.11.10",
     "@react-navigation/native": "^5.9.4",
@@ -23,6 +24,7 @@
     "react-native-calendar-strip": "^2.2.1",
     "react-native-calendars": "^1.1259.0",
     "react-native-dropdown-picker": "^5.1.4",
+    "react-native-elements": "^3.4.1",
     "react-native-floating-action": "^1.21.0",
     "react-native-gesture-handler": "~1.10.2",
     "react-native-paper": "^4.8.1",

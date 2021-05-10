@@ -1,10 +1,21 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import { useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
 import Screen from '../components/Screen';
 import COLORS from '../consts/colors';
 
-const MainScreen = ({navigation}) => {
+const MainScreen = () => {
+  const navigation = useNavigation();
+  const currentUser = useSelector(state => state.currentUser);
+  useEffect(() => {
+    console.log(currentUser);
+    if(currentUser.loggedIn){
+      navigation.navigate((currentUser.user.type === "patient") ? "PatientTabs" : "DoctorTabs");
+    }
+  },[])
+  
   return (
     <Screen>
       <View style={styles.container}>

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import {useSelector, useDispatch} from 'react-redux'
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { 
     StyleSheet, 
     Text, 
@@ -11,22 +11,18 @@ import {
 } from 'react-native';
 import axios from 'axios';
 import {setUser} from '../redux/actions';
+import faker from 'faker';
 
 
 const LoginScreen = ({navigation, route}) => {
     const dispatch = useDispatch();
-    const currentUser = useSelector(state => state.currentUser);
     const [userType] = useState(route.params);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    console.log(userType);
-    console.log(currentUser);
-  },[]);
-
   const login = async () => {
+    if(email !== '' || password !== '') {
       const params = JSON.stringify({
         "email": email,
         "password": password,
@@ -43,18 +39,21 @@ const LoginScreen = ({navigation, route}) => {
           },
       }).then((res) => {
         setIsLoading(false);
-        res.data.type = userType;
-        console.log(res.data);
-        dispatch(setUser(res.data));
         if(Object.keys(res.data).length > 0) {
-          navigation.navigate((userType === "patient") ? "PatientTabs" : "DoctorTabs", res.data);
+          res.data.type = userType;
+          res.data.image = `https://randomuser.me/api/portraits/${faker.helpers.randomize(['women', 'men'])}/${faker.datatype.number(10)}.jpg`;
+          console.log(res.data);
+          dispatch(setUser(res.data));
+          navigation.navigate((userType === "patient") ? "PatientTabs" : "DoctorTabs");
         } else {
-          Alert.alert("Invalid email and password!");
+          Alert.alert("Invalid email or password!");
         }
       }).catch((err) => {
         console.log(err);
       });
-
+    } else {
+      Alert.alert("Invalid email or password!");
+    }
   }
 
     if(isLoading){
@@ -96,6 +95,8 @@ const LoginScreen = ({navigation, route}) => {
   
 }
 
+export default LoginScreen;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -130,4 +131,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default LoginScreen;
+
