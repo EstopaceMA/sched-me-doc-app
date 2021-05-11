@@ -95,7 +95,10 @@ export default function App() {
             component={DoctorTabs} 
             options={{
               title: "Sched Mo Doc",
-              headerLeft: null
+              headerLeft: null,
+              headerStyle: {
+                backgroundColor: COLORS.primary
+              }
             }}
           />
           <Stack.Screen 

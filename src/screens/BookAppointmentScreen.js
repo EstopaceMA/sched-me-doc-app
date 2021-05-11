@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {useSelector} from 'react-redux'
+import {useSelector} from 'react-redux';
 import {View, StyleSheet, Text, Modal} from 'react-native';
 import Screen from '../components/Screen';
 

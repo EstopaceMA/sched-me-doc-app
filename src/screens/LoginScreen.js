@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import axios from 'axios';
 import {setUser} from '../redux/actions';
+import COLORS from '../consts/colors';
 import faker from 'faker';
 
 
@@ -59,7 +60,7 @@ const LoginScreen = ({navigation, route}) => {
     if(isLoading){
       return(
         <View style={styles.preloader}>
-          <ActivityIndicator size="large" color="#9E9E9E"/>
+          <ActivityIndicator size="large" color={COLORS.primary}/>
         </View>
       )
     }    

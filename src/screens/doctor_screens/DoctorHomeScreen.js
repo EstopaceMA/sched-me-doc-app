@@ -36,6 +36,7 @@ const DoctorHomeScreen = () => {
                     image: `https://randomuser.me/api/portraits/${faker.helpers.randomize(['women', 'men'])}/${faker.datatype.number(60)}.jpg`
                 }));
                 setDocData(data); 
+                setIsLoading(false);
             })
             .catch(err => {  
               console.log(err)  
@@ -43,7 +44,6 @@ const DoctorHomeScreen = () => {
         }
         getDoctors();
         console.log(docData);
-        setIsLoading(false);
     },[])
 
     const Item = ({index, item}) => {
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row', 
         padding: SPACING,
         marginBottom: SPACING,
-        backgroundColor: '#0000',
+        backgroundColor: COLORS.white,
         borderRadius: 12,
         shadowColor: "#000",
         shadowOpacity: .5,

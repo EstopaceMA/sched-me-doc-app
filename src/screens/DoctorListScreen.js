@@ -13,6 +13,8 @@ import { useNavigation } from '@react-navigation/native';
 import faker from 'faker';
 import axios from 'axios';
 
+import COLORS from '../consts/colors';
+
 
 // Generate Fake Data
 // faker.seed(10);
@@ -45,6 +47,7 @@ const DoctorListScreen = () => {
                     image: `https://randomuser.me/api/portraits/${faker.helpers.randomize(['women', 'men'])}/${faker.datatype.number(60)}.jpg`
                 }));
                 setDocData(data); 
+                setIsLoading(false);
             })  
             .catch(err => {  
               console.log(err)  
@@ -52,7 +55,6 @@ const DoctorListScreen = () => {
         }
         getDoctors();
         console.log(docData);
-        setIsLoading(false);
     },[])
 
     const Item = ({index, item}) => {
@@ -88,7 +90,7 @@ const DoctorListScreen = () => {
     if(isLoading){
         return(
           <View style={styles.preloader}>
-            <ActivityIndicator size="large" color="#9E9E9E"/>
+            <ActivityIndicator size="large" color={COLORS.primary}/>
           </View>
         )
     }
@@ -119,7 +121,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row', 
         padding: SPACING,
         marginBottom: SPACING,
-        backgroundColor: '#0000',
+        backgroundColor: COLORS.white,
         borderRadius: 12,
         shadowColor: "#000",
         shadowOpacity: .5,

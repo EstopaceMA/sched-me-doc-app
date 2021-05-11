@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import {useSelector, useDispatch} from 'react-redux';
 import {
     View, 
     Text, 
@@ -6,17 +7,23 @@ import {
     TextInput, 
     ScrollView,
     TouchableWithoutFeedback,
-    TouchableOpacity
+    TouchableOpacity,
+    ActivityIndicator
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import Screen from '../../components/Screen';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import COLORS from '../../consts/colors';
-import moment from 'moment';
 import DropDownPicker from 'react-native-dropdown-picker';
+import moment from 'moment';
+import axios from 'axios';
+
+import Screen from '../../components/Screen';
+import COLORS from '../../consts/colors';
 import { useGenerateTimeSlots } from '../../hooks';
 
-const DoctorSetWorkSchedScreen = () => {
+
+const DoctorSetWorkSchedScreen = ({navigation, route}) => {
+  const selectedDay = route.params;
+  const currentUser = useSelector(state => state.currentUser);
   const [timeSlots, setTimeSlots] = useState([]);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
@@ -37,9 +44,9 @@ const DoctorSetWorkSchedScreen = () => {
 
   useEffect(() => {
 
-    console.log(timeSlots);
+    console.log(currentUser);
 
-  },[timeSlots])
+  },[])
 
   const onChangeStartTime = (event, selectedDate) => {
     console.log(moment(selectedDate).format("HH:mm"));
@@ -72,6 +79,31 @@ const DoctorSetWorkSchedScreen = () => {
     console.log(timeSlots.length);
   }
 
+  const onSaveSched = async () => {
+    const userId = currentUser.user.id;
+    const sched = JSON.parse(currentUser.user.work_schedule);
+    const url = `https://us-central1-sched-me-doc.cloudfunctions.net/doctor/${userId}`;
+    
+    sched[selectedDay] = { 
+      "StartTime": moment(startTime).format("HH:mm").toString(),
+      "EndTime": moment(endTime).format("HH:mm").toString(),
+      "MinutePerSlot": value
+    };
+
+    const params = JSON.stringify({
+      "work_schedule": JSON.stringify(sched)
+    });
+    await axios.put(url, params,{
+          "headers": {
+            "content-type": "application/json",
+        },
+    }).then((res) => {
+      currentUser.user.work_schedule = res.data.work_schedule;
+      navigation.navigate("DocWorkSched");
+    }).catch((err) => {
+      console.log(err);
+    });
+  }
   return (
     <Screen>
       <View>
@@ -164,7 +196,7 @@ const DoctorSetWorkSchedScreen = () => {
         <View style={{ flex: 1, padding: 20, marginTop: 20, justifyContent:'flex-end' }}>
             <TouchableOpacity
                 activeOpacity={1}
-                onPress={() => {}}
+                onPress={() => {onSaveSched()}}
             >
                 <View style={styles.btn}>
                     <Text style={{color: COLORS.white, fontSize: 18, fontWeight: 'bold'}}>
@@ -174,15 +206,12 @@ const DoctorSetWorkSchedScreen = () => {
             </TouchableOpacity>
         </View>
       </View>
-      
-      
 
       {showStartTime && (
         <DateTimePicker
           testID="dateTimePicker"
           value={startTime}
           mode="time"
-          is24Hour={true}
           display="default"
           onChange={onChangeStartTime}
         />
@@ -192,7 +221,6 @@ const DoctorSetWorkSchedScreen = () => {
           testID="dateTimePicker"
           value={endTime}
           mode="time"
-          is24Hour={true}
           display="default"
           onChange={onChangeEndTime}
         />
