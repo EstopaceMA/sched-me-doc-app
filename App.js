@@ -128,9 +128,27 @@ export default function App() {
               headerShown:false
             }}
           />
-          <Stack.Screen name="DoctorList" component={DoctorListScreen} options={{ title: 'Select a Doctor' }}/>
+          <Stack.Screen 
+            name="DoctorList" 
+            component={DoctorListScreen} 
+            options={{ 
+              title: 'Select a Doctor', 
+              headerStyle: {
+                backgroundColor: COLORS.primary
+              }
+            }}  
+          />
+          <Stack.Screen 
+            name="BookAppointment" 
+            component={BookAppointmentScreen} 
+            options={{ 
+              title: 'Book an Appointment',
+              headerStyle: {
+                backgroundColor: COLORS.primary
+              }
+            }}
+          />
           <Stack.Screen name="Profile" component={ProfileScreen} />
-          <Stack.Screen name="BookAppointment" component={BookAppointmentScreen} options={{ title: 'Book an Appointment' }}/>
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="SignUp" component={SignUpScreen} />
         </Stack.Navigator>

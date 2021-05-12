@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import { 
     StyleSheet,
     StatusBar,
@@ -9,7 +9,7 @@ import {
     ActivityIndicator,
     TouchableOpacity
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import faker from 'faker';
 import axios from 'axios';
 
@@ -33,7 +33,8 @@ const ITEM_SIZE = AVATAR_SIZE + SPACING * 3;
 
 const DoctorListScreen = () => {
     const navigation = useNavigation();
-    const scrollY = React.useRef(new Animated.Value(0)).current;
+    const route = useRoute();
+    const scrollY = useRef(new Animated.Value(0)).current;
     const [docData, setDocData] = useState([]); 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -44,9 +45,10 @@ const DoctorListScreen = () => {
             .then(res => {  
                 const data = res.data.map(obj => ({
                     ...obj, 
-                    image: `https://randomuser.me/api/portraits/${faker.helpers.randomize(['women', 'men'])}/${faker.datatype.number(60)}.jpg`
+                    image: `https://randomuser.me/api/portraits/${faker.helpers.randomize(['men'])}/${faker.datatype.number(60)}.jpg`
                 }));
                 setDocData(data); 
+                console.log(docData);
                 setIsLoading(false);
             })  
             .catch(err => {  
@@ -54,7 +56,7 @@ const DoctorListScreen = () => {
             });
         }
         getDoctors();
-        console.log(docData);
+        console.log(route.params);
     },[])
 
     const Item = ({index, item}) => {
@@ -71,7 +73,7 @@ const DoctorListScreen = () => {
         })
     
         return (
-            <TouchableOpacity onPress={() => navigation.navigate('BookAppointment', item)}>
+            <TouchableOpacity onPress={() => navigation.navigate('BookAppointment', {docData: item, selectedDate: route.params})}>
                 <Animated.View style={{...styles.flatListItem, transform:[{scale}]}}>
                     <Image
                         source={{ uri: item.image }}
@@ -96,10 +98,18 @@ const DoctorListScreen = () => {
     }
     return (
         <View style={{flex: 1, backgroundColor: '#fff'}}>
+            <View style={{ paddingTop: 10, paddingLeft: 20 }}>
+                <Text style={{ fontSize: 15, fontWeight: "bold", color: COLORS.black }}>
+                    Selected Date of Appointment,
+                </Text>
+                <Text style={{ fontSize: 25, fontWeight: "bold", color: COLORS.primary }}>
+                    {new Date(route.params).toDateString()}
+                </Text>
+            </View>
             <Animated.FlatList
                 contentContainerStyle={{
                     padding: SPACING,
-                    paddingTop: StatusBar.currentHeight || 42
+                    paddingTop: StatusBar.currentHeight - 20 || 42
                 }}
                 data={docData}
                 keyExtractor={item => item.id}

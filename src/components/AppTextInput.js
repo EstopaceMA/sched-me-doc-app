@@ -11,7 +11,7 @@ function AppTextInput({ icon, width = '100%', ...otherProps }) {
             <TextInput 
                 placeholderTextColor={defaultStyles.colors.medium}
                 style={defaultStyles.text} 
-                {...otherProps} 
+                {...otherProps}
             />
         </View>
     );
@@ -20,10 +20,12 @@ function AppTextInput({ icon, width = '100%', ...otherProps }) {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: defaultStyles.colors.light,
-        borderRadius: 25,
-        flexDirection: "row",
+        borderRadius: 12,
+        flexDirection: "column",
         padding: 15,
         marginVertical: 10,
+        justifyContent:'center',
+        alignContent: 'center'
     },
     icon: {
         margin: 10,

@@ -72,7 +72,7 @@ const AppointmentScreen = () => {
       <FAB
         style={styles.fab}
         icon="plus"
-        onPress={() => navigation.navigate('DoctorList')}
+        onPress={() => navigation.navigate('DoctorList', date)}
         color={COLORS.white}
       />
     </Screen>
