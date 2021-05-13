@@ -40,6 +40,7 @@ const BookAppointmentScreen = () => {
   const [selectedTimeSlot, SetSelectedTimeSlot] = useState(null);
   const [description, setDescription] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [occupiedTimeSlots, setOccupiedTimeSlots] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
 
   useEffect(() => {
@@ -52,10 +53,25 @@ const BookAppointmentScreen = () => {
       week_day.EndTime
     ));
 
+    const loadDoctorOccupiedTime = async () => {
+      setIsLoading(true);
+      await axios.get(`https://us-central1-sched-me-doc.cloudfunctions.net/appointment/${selectedDate}`) 
+      .then(res => {  
+          const data = res.data;
+          setOccupiedTimeSlots(data.map(({ timeSlot }) => timeSlot));
+          setIsLoading(false);
+      })
+      .catch(err => {  
+        console.log(err)
+      });
+    }
+    loadDoctorOccupiedTime();
   },[])
 
+  
+
   const saveAppointment = async () => {
-    if(selectedTimeSlot !== null || description !== ""){
+    if(selectedTimeSlot !== null && description !== ""){
       const params = JSON.stringify({
         "docId": docData.id,
         "userId": currentUser.id,
@@ -89,11 +105,14 @@ const BookAppointmentScreen = () => {
 
   const TimeSlotItem = ({val, index}) => {
     return (
-      <TouchableOpacity activeOpacity={0.7} onPress={() => SetSelectedTimeSlot(index)}>
+      <TouchableOpacity activeOpacity={0.7} onPress={() => 
+        {(!occupiedTimeSlots.includes(val)) ? SetSelectedTimeSlot(index) : ''}}>
         <View style={[styles.timeSlot, { 
-          backgroundColor: (selectedTimeSlot !== null && selectedTimeSlot === index)
+          backgroundColor: (!occupiedTimeSlots.includes(val)) 
+            ? ((selectedTimeSlot !== null && selectedTimeSlot === index)
             ? COLORS.orange 
-            : COLORS.secondary 
+            : COLORS.secondary)
+            : "red" 
         }]}>
             <View style={{ flex: 1, justifyContent:'center', alignItems:'center' }}>
                 <Text style={{ fontSize: 20, fontWeight: 'bold' }}>{val}</Text>
@@ -155,7 +174,7 @@ const BookAppointmentScreen = () => {
               <ScrollView>
                 <View style={{flex: 1, justifyContent:'space-between', flexDirection: 'row', flexWrap: 'wrap'}}>
                     {
-                      timeSlots.map((val, index) => <TimeSlotItem key={index} val={val} index={index} />)
+                      timeSlots.map((val, index) => <TimeSlotItem key={index} val={val} index={index}/>)
                     }
                 </View>
               </ScrollView>
