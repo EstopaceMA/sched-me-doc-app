@@ -1,12 +1,19 @@
 import React from 'react';
 import Constants from 'expo-constants';
-import { SafeAreaView, StyleSheet, View, StatusBar } from 'react-native';
+import { SafeAreaView, StyleSheet, View, StatusBar, ImageBackground } from 'react-native';
 
 function Screen({children, style}) {
     return (
         <SafeAreaView style={[styles.screen, style]}>
             <StatusBar hidden/>
-            <View style={[styles.view, style]}>{children}</View>
+                <ImageBackground 
+                    resizeMode='cover' 
+                    blurRadius={9} 
+                    source={require('../assets/app_background.jpg')} 
+                    style={{ flex: 1 }}
+                >
+                    <View style={[styles.view, style]}>{children}</View>
+                </ImageBackground>
         </SafeAreaView>
     );
 }

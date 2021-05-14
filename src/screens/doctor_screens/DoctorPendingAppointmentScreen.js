@@ -111,7 +111,7 @@ const DoctorPendingAppointmentScreen = () => {
                 <View>
                     <View style={{ flexDirection: 'row' }}>
                         <MatIcon name="face" size={17} color={COLORS.orange} /> 
-                        <Text>{" "}{item.docName}</Text>
+                        <Text>{" "}{item.userName}</Text>
                     </View>
                     <View style={{ flexDirection: 'row' }}>
                         <MatIcon name="access-time" size={17} color={COLORS.orange} /> 

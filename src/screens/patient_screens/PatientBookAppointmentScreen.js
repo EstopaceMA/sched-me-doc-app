@@ -42,31 +42,38 @@ const PatientBookAppointmentScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [occupiedTimeSlots, setOccupiedTimeSlots] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
+  const [hasWorkingSched, setHasWorkingSched] = useState(true);
 
   useEffect(() => {
-    console.log(docData);
-    const week_schedule = JSON.parse(docData.work_schedule);
-    const week_day = week_schedule[WEEK_DAYS[new Date(selectedDate).getDay()]];
+    try{
+      console.log(docData);
+      const week_schedule = JSON.parse(docData.work_schedule);
+      const week_day = week_schedule[WEEK_DAYS[new Date(selectedDate).getDay()]];
 
-    setTimeSlots(useGenerateTimeSlots(
-      Number(week_day.MinutePerSlot), 
-      week_day.StartTime, 
-      week_day.EndTime
-    ));
+      setTimeSlots(useGenerateTimeSlots(
+        Number(week_day.MinutePerSlot), 
+        week_day.StartTime, 
+        week_day.EndTime
+      ));
 
-    const loadDoctorOccupiedTime = async () => {
-      setIsLoading(true);
-      await axios.get(`https://us-central1-sched-me-doc.cloudfunctions.net/appointment/doctor/${docData.id}/${selectedDate}`) 
-      .then(res => {  
-          const data = res.data;
-          setOccupiedTimeSlots(data.map(({ timeSlot }) => timeSlot));
-          setIsLoading(false);
-      })
-      .catch(err => {  
-        console.log(err)
-      });
+      const loadDoctorOccupiedTime = async () => {
+        setIsLoading(true);
+        await axios.get(`https://us-central1-sched-me-doc.cloudfunctions.net/appointment/doctor/${docData.id}/${selectedDate}`) 
+        .then(res => {  
+            const data = res.data;
+            setOccupiedTimeSlots(data.map(({ timeSlot }) => timeSlot));
+            setIsLoading(false);
+        })
+        .catch(err => {  
+          console.log(err)
+        });
+      }
+      loadDoctorOccupiedTime();
+    } catch (err) {
+      setHasWorkingSched(false);
+      console.log(err);
     }
-    loadDoctorOccupiedTime();
+    
   },[])
   
 
@@ -124,6 +131,13 @@ const PatientBookAppointmentScreen = () => {
     );
   }
 
+  if(!hasWorkingSched){
+    return(
+      <View style={styles.preloader}>
+        <Text>NOT AVAILABLE</Text>
+      </View>
+    )
+  }
   if(isLoading){
     return(
       <View style={styles.preloader}>

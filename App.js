@@ -1,5 +1,5 @@
-import React, { useState, useEffect,  } from "react";
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import React, { useState } from "react";
+import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { BottomNavigation } from 'react-native-paper';
 import {Provider} from 'react-redux';
@@ -158,9 +158,21 @@ export default function App() {
               }
             }}
           />
+          <Stack.Screen 
+            name="Login" 
+            component={LoginScreen} 
+            options={{
+              headerShown:false
+            }}
+          />
+          <Stack.Screen 
+            name="SignUp" 
+            component={SignUpScreen} 
+            options={{
+              headerShown:false
+            }}
+          />
           <Stack.Screen name="Profile" component={PatientProfileScreen} />
-          <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="SignUp" component={SignUpScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

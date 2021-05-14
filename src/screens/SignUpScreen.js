@@ -2,40 +2,70 @@ import React, { useState } from 'react';
 import { 
   StyleSheet, 
   Text, 
-  View, 
-  TextInput, 
-  Button, 
+  View,
   Alert, 
   ActivityIndicator 
 } from 'react-native';
-import firebase from '../auth/firebase';
+import axios from 'axios';
+import faker from 'faker';
 
-const SignUpScreen = ({navigation}) => {
-    const [displayName, setDisplayName] = useState('');
+import AppButton from '../components/AppButton';
+import AppTextInput from '../components/AppTextInput';
+import Screen from '../components/Screen';
+
+
+const SignUpScreen = ({navigation, route}) => {
+    const [userType] = useState(route.params);
+    const [name, setName] = useState('');
+    const [address, setAddress] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
-    const registerUser = () => {
-        if(email === '' && password === '') {
-            Alert.alert('Enter details to signup!')
+    const onRegister = () => {
+        console.log(userType);
+        if(name !== '' && address !=='' && email !== '' && password !== '' && confirmPassword !== '') {
+          if(password !== confirmPassword) {
+            Alert.alert("Password didn't match!");
+          } else {
+            register();
+          }
+
         } else {
-            setIsLoading(true);
-            firebase
-                .auth()
-                .createUserWithEmailAndPassword(email, password)
-                .then((res) => {
-                    res.user.updateProfile({
-                    displayName: displayName
-                });
-                console.log('User registered successfully!');
-                setIsLoading(false);
-                setDisplayName('');
-                setEmail('');
-                setPassword('');
-                })
-            .catch(error => console.log(error))
+          Alert.alert("Fill all the fields!");
         }
+    }
+
+    const register = async () => {
+      userData = {
+        "name": name,
+        "email": email,
+        "password": password,
+        "address": address,
+        "image": `https://randomuser.me/api/portraits/${faker.helpers.randomize(['men'])}/${faker.datatype.number(60)}.jpg`
+      }
+
+      userData.work_schedule = {};
+
+      const params = JSON.stringify(userData);
+
+      const url = (userType === 'patient') 
+        ? "https://us-central1-sched-me-doc.cloudfunctions.net/user"
+        : "https://us-central1-sched-me-doc.cloudfunctions.net/doctor";
+
+      setIsLoading(true);
+      await axios.post(url, params,{
+            "headers": {
+              "content-type": "application/json",
+          },
+      }).then((res) => {
+        setIsLoading(false);
+        Alert.alert("Registration success!");
+        navigation.navigate("Login", userType);
+      }).catch((err) => {
+        console.log(err);
+      });
     }
 
 
@@ -47,43 +77,55 @@ const SignUpScreen = ({navigation}) => {
       )
     }    
     return (
-      
-      <View style={styles.container}>  
-        <TextInput
-          style={styles.inputStyle}
-          placeholder="Name"
-          value={displayName}
-          onChangeText={(val) => setDisplayName(val)}
-        />      
-        <TextInput
-          style={styles.inputStyle}
-          placeholder="Email"
-          value={email}
-          onChangeText={(val) => setEmail(val)}
-        />
-        <TextInput
-          style={styles.inputStyle}
-          placeholder="Password"
-          value={password}
-          onChangeText={(val) => setPassword(val)}
-          maxLength={15}
-          secureTextEntry={true}
-        />   
-        <Button
-          color="#3740FE"
-          title="Signup"
-          onPress={() => registerUser()}
-        />
+      <Screen>
+        <View style={[styles.container, {flex: 2}]}>
+          <AppTextInput 
+            placeholder="Name"
+            textAlign="left"
+            value={name}
+            onChangeText={(val) => setName(val)}
+          />    
+          <AppTextInput 
+            placeholder="Email"
+            textAlign="left"
+            value={email}
+            onChangeText={(val) => setEmail(val)}
+          />
+          <AppTextInput 
+            placeholder="Address"
+            textAlign="left"
+            value={address}
+            onChangeText={(val) => setAddress(val)}
+          />
+          <AppTextInput 
+            placeholder="Password"
+            textAlign="left"
+            value={password}
+            onChangeText={(val) => setPassword(val)}
+            secureTextEntry={true}
+          />
+          <AppTextInput 
+            placeholder="Confirm Password"
+            textAlign="left"
+            value={confirmPassword}
+            onChangeText={(val) => setConfirmPassword(val)}
+            secureTextEntry={true}
+          />
+          <AppButton title="REGISTER" onPress={() => onRegister()}/>
 
-        <Text 
-          style={styles.loginText}
-          onPress={() => {navigation.navigate('Login')}}>
-          Already Registered? Click here to login
-        </Text>                          
-      </View>
+          <Text 
+            style={styles.loginText}
+            onPress={() => {navigation.navigate('Login', userType)}}>
+            Already Registered? Click here to login
+          </Text>                          
+        </View>
+      </Screen>
+      
     );
   
 }
+
+export default SignUpScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -92,7 +134,6 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     padding: 35,
-    backgroundColor: '#fff'
   },
   inputStyle: {
     width: '100%',
@@ -118,5 +159,3 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff'
   }
 });
-
-export default SignUpScreen;

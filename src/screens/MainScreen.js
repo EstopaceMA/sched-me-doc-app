@@ -1,7 +1,12 @@
 import React, {useEffect} from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { 
+  View, 
+  Text, 
+  StyleSheet, 
+  TouchableOpacity,
+} from "react-native";
 
 import Screen from '../components/Screen';
 import COLORS from '../consts/colors';

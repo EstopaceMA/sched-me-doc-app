@@ -5,7 +5,7 @@ import {
     Text, 
     View,
     Alert, 
-    ActivityIndicator 
+    ActivityIndicator
 } from 'react-native';
 import axios from 'axios';
 
@@ -25,7 +25,7 @@ const LoginScreen = ({navigation, route}) => {
     const [isLoading, setIsLoading] = useState(false);
 
   const login = async () => {
-    if(email !== '' || password !== '') {
+    if(email !== '' && password !== '') {
       const params = JSON.stringify({
         "email": email,
         "password": password,
@@ -83,11 +83,11 @@ const LoginScreen = ({navigation, route}) => {
               secureTextEntry={true}
             />
           
-          <AppButton title="Log in" onPress={() => login()}/>
+          <AppButton title="LOGIN" onPress={() => login()}/>
 
           <Text 
             style={styles.loginText}
-            onPress={() => navigation.navigate('SignUp')}>
+            onPress={() => navigation.navigate('SignUp', (userType === 'patient') ? "patient" : "doctor")}>
             Don't have account? Click here to signup
           </Text>                          
         </View>
