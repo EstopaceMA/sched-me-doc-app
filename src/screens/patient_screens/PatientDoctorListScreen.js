@@ -13,7 +13,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import faker from 'faker';
 import axios from 'axios';
 
-import COLORS from '../consts/colors';
+import COLORS from '../../consts/colors';
 
 
 // Generate Fake Data
@@ -31,7 +31,7 @@ const SPACING = 20;
 const AVATAR_SIZE = 70;
 const ITEM_SIZE = AVATAR_SIZE + SPACING * 3;
 
-const DoctorListScreen = () => {
+const PatientDoctorListScreen = () => {
     const navigation = useNavigation();
     const route = useRoute();
     const scrollY = useRef(new Animated.Value(0)).current;
@@ -124,7 +124,7 @@ const DoctorListScreen = () => {
     )
 }
 
-export default DoctorListScreen;
+export default PatientDoctorListScreen;
 
 const styles = StyleSheet.create({
     flatListItem: {

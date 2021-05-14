@@ -3,26 +3,31 @@ import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { BottomNavigation } from 'react-native-paper';
 import {Provider} from 'react-redux';
+
 import {store} from './src/redux';
 import COLORS from './src/consts/colors';
-
 import { 
-  AppointmentScreen, 
-  HomeScreen, 
-  DetailsScreen, 
-  ProfileScreen, 
   SignUpScreen, 
   LoginScreen, 
-  MainScreen, 
-  BookAppointmentScreen, 
-  DoctorListScreen 
+  MainScreen
 } from './src/screens';
+
+import {
+  PatientAppointmentScreen,
+  PatientHomeScreen,
+  PatientBookAppointmentScreen,
+  PatientDoctorListScreen,
+  PatientProfileScreen,
+  PatientDetailsScreen
+} from './src/screens/patient_screens';
 
 import {
   DoctorHomeScreen, 
   DoctorAccountScreen,
   DoctorWorkScheduleScreen,
-  DoctorSetWorkSchedScreen
+  DoctorSetWorkSchedScreen,
+  DoctorAppointmentScreen,
+  DoctorPendingAppointmentScreen,
 } from './src/screens/doctor_screens';
 
 const Stack = createStackNavigator();
@@ -36,8 +41,8 @@ export default function App() {
       { key: 'appointment', title: 'Appointment', icon: 'calendar', color: COLORS.orange },
     ]);
     const renderScene = BottomNavigation.SceneMap({
-      home: HomeScreen,
-      appointment: AppointmentScreen
+      home: PatientHomeScreen,
+      appointment: PatientAppointmentScreen
     });
     return (
       <BottomNavigation
@@ -53,12 +58,14 @@ export default function App() {
     const [index, setIndex] = useState(0);
     const [routes] = useState([
       { key: 'home', title: 'Home', icon: 'home', color: COLORS.primary },
-      { key: 'appointment', title: 'Appointment', icon: 'calendar', color: COLORS.orange },
-      { key: 'profile', title: 'Profile', icon: 'account-details', color: COLORS.primary },
+      { key: 'pending_appointment', title: 'Pending', icon: 'calendar-edit', color: COLORS.orange },
+      { key: 'appointment', title: 'Appointment', icon: 'calendar', color: COLORS.primary },
+      { key: 'profile', title: 'Profile', icon: 'account-details', color: COLORS.orange },
     ]);
     const renderScene = BottomNavigation.SceneMap({
       home: DoctorHomeScreen,
-      appointment: AppointmentScreen,
+      pending_appointment: DoctorPendingAppointmentScreen,
+      appointment: DoctorAppointmentScreen,
       profile: DoctorAccountScreen
     });
     return (
@@ -87,7 +94,10 @@ export default function App() {
             component={PatientTabs} 
             options={{
               title: "Sched Me Doc",
-              headerLeft: null
+              headerLeft: null,
+              headerStyle: {
+                backgroundColor: COLORS.primary
+              }
             }}
           />
           <Stack.Screen 
@@ -123,14 +133,14 @@ export default function App() {
           />
           <Stack.Screen 
             name="Details" 
-            component={DetailsScreen} 
+            component={PatientDetailsScreen} 
             options={{
               headerShown:false
             }}
           />
           <Stack.Screen 
             name="DoctorList" 
-            component={DoctorListScreen} 
+            component={PatientDoctorListScreen} 
             options={{ 
               title: 'Select a Doctor', 
               headerStyle: {
@@ -140,7 +150,7 @@ export default function App() {
           />
           <Stack.Screen 
             name="BookAppointment" 
-            component={BookAppointmentScreen} 
+            component={PatientBookAppointmentScreen} 
             options={{ 
               title: 'Book an Appointment',
               headerStyle: {
@@ -148,7 +158,7 @@ export default function App() {
               }
             }}
           />
-          <Stack.Screen name="Profile" component={ProfileScreen} />
+          <Stack.Screen name="Profile" component={PatientProfileScreen} />
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="SignUp" component={SignUpScreen} />
         </Stack.Navigator>

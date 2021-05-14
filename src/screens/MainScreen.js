@@ -20,7 +20,7 @@ const MainScreen = () => {
     <Screen>
       <View style={styles.container}>
         <TouchableOpacity
-          activeOpacity={1}
+          activeOpacity={.7}
           onPress={() => {navigation.navigate('Login', 'patient')}}
         >
           <View style={styles.btn}>
@@ -30,7 +30,7 @@ const MainScreen = () => {
           </View>
         </TouchableOpacity>
         <TouchableOpacity
-          activeOpacity={1}
+          activeOpacity={.7}
           onPress={() => {navigation.navigate('Login', 'doctor')}}
         >
           <View style={styles.btn}>

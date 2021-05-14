@@ -17,14 +17,14 @@ const InfoText = ({ text }) => (
       
 
 const DoctorAccountScreen = () => { 
-  const currentUser = useSelector(state => state.currentUser);
+  const currentUser = useSelector(state => state.currentUser.user);
   const navigation = useNavigation();
 
   useEffect(() => {
     console.log(currentUser);
   },[])
 
-  onPressSetSchedule = () => {
+  const onPressSetSchedule = () => {
     navigation.navigate("DocWorkSched");
   }
 
@@ -35,18 +35,18 @@ const DoctorAccountScreen = () => {
             <Avatar
               rounded
               size="large"
-              source={{uri: currentUser.user.image}}
+              source={{uri: currentUser.image}}
             />
           </View>
           <View>
-            <Text style={{ fontSize: 16 }}>{"Mark Anthony Estopace"}</Text>
+            <Text style={{ fontSize: 16 }}>{currentUser.name}</Text>
             <Text
               style={{
                 color: 'gray',
                 fontSize: 16,
               }}
             >
-              {"estopace.ma@gmail.com"}
+              {currentUser.email}
             </Text>
           </View>
         </View>

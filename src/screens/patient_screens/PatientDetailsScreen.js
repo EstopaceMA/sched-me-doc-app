@@ -7,11 +7,10 @@ import {
   Text,
   View,
 } from 'react-native';
-import COLORS from '../consts/colors';
+import COLORS from '../../consts/colors';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import AppButton from '../components/AppButton';
 
-const DetailsScreen = ({navigation, route}) => {
+const PatientDetailsScreen = ({navigation, route}) => {
   const item = route.params;
 
   return (
@@ -109,13 +108,12 @@ const DetailsScreen = ({navigation, route}) => {
             </Text>
           </View>
         </View>
-        <View style={style.btn}>
-          <AppButton title="Book Now" onPress={() => navigation.navigate('BookAppointment')}/>
-        </View>
       </View>
     </ScrollView>
   );
 };
+
+export default PatientDetailsScreen;
 
 const style = StyleSheet.create({
   btn: {
@@ -162,5 +160,3 @@ const style = StyleSheet.create({
     justifyContent: 'space-between',
   },
 });
-
-export default DetailsScreen;

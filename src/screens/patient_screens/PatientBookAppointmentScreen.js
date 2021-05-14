@@ -14,12 +14,12 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import axios from 'axios';
 
-import Screen from '../components/Screen';
-import AppTextInput from '../components/AppTextInput';
-import COLORS from '../consts/colors';
-import { useGenerateTimeSlots } from '../hooks';
+import Screen from '../../components/Screen';
+import AppTextInput from '../../components/AppTextInput';
+import COLORS from '../../consts/colors';
+import { useGenerateTimeSlots } from '../../hooks';
 
-const BookAppointmentScreen = () => {
+const PatientBookAppointmentScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const currentUser = useSelector(state => state.currentUser.user);
@@ -44,6 +44,7 @@ const BookAppointmentScreen = () => {
   const [showAlert, setShowAlert] = useState(false);
 
   useEffect(() => {
+    console.log(docData);
     const week_schedule = JSON.parse(docData.work_schedule);
     const week_day = week_schedule[WEEK_DAYS[new Date(selectedDate).getDay()]];
 
@@ -55,7 +56,7 @@ const BookAppointmentScreen = () => {
 
     const loadDoctorOccupiedTime = async () => {
       setIsLoading(true);
-      await axios.get(`https://us-central1-sched-me-doc.cloudfunctions.net/appointment/${selectedDate}`) 
+      await axios.get(`https://us-central1-sched-me-doc.cloudfunctions.net/appointment/doctor/${docData.id}/${selectedDate}`) 
       .then(res => {  
           const data = res.data;
           setOccupiedTimeSlots(data.map(({ timeSlot }) => timeSlot));
@@ -67,7 +68,6 @@ const BookAppointmentScreen = () => {
     }
     loadDoctorOccupiedTime();
   },[])
-
   
 
   const saveAppointment = async () => {
@@ -75,6 +75,8 @@ const BookAppointmentScreen = () => {
       const params = JSON.stringify({
         "docId": docData.id,
         "userId": currentUser.id,
+        "docName": docData.name,
+        "userName": currentUser.name,            
         "date": selectedDate,
         "timeSlot": timeSlots[selectedTimeSlot],
         "description": description,
@@ -217,7 +219,7 @@ const BookAppointmentScreen = () => {
   );
 };
 
-export default BookAppointmentScreen;
+export default PatientBookAppointmentScreen;
 
 const styles = StyleSheet.create({
     container: {

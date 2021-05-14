@@ -65,7 +65,7 @@ const DoctorWorkScheduleScreen = () => {
               containerStyle={styles.listItemContainer}
             >
               <ListItem.Content>
-                <ListItem.Title><Icon name="calendar-alt" size={20} color={COLORS.primary} /> {item}</ListItem.Title>
+                <ListItem.Title><Icon name="calendar-alt" size={20} color={COLORS.orange} /> {item}</ListItem.Title>
                 <ListItem.Subtitle>
                   <Icon name="calendar-alt" size={20} color="rgba(0,0,0,0)" />
                   <Icon name="clock" size={15} color={COLORS.orange} /> 

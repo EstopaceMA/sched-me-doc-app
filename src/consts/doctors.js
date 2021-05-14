@@ -1,7 +1,7 @@
 const doctors = [
     {
       id: '1',
-      name: 'Dr. Kath Bautista',
+      name: 'Dr. Dexie Diaz',
       location: 'Sta Rosa Laguna',
       price: 120,
       image: require('../assets/doc1.jpg'),
@@ -9,7 +9,7 @@ const doctors = [
     },
     {
       id: '2',
-      name: 'Dr. Analyn Estopace',
+      name: 'Dr. Kathryn Bernardo',
       location: 'Biñan Laguna',
       price: 70,
       image: require('../assets/doc2.jpg'),
@@ -25,7 +25,7 @@ const doctors = [
     },
     {
       id: '4',
-      name: 'Dr. Diether Santos',
+      name: 'Dr. Bong Go',
       location: 'Main street',
       price: 100,
       image: require('../assets/doc4.jpg'),

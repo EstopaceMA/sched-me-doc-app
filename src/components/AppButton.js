@@ -4,7 +4,7 @@ import COLORS from '../consts/colors';
 
 function AppButton({title, onPress, color = "primary"}) {
     return (
-        <TouchableOpacity style={[styles.button, {backgroundColor: color !== "primary" ? COLORS.secondary : COLORS.primary}]} onPress={onPress}>
+        <TouchableOpacity activeOpacity={.7} style={[styles.button, {backgroundColor: color !== "primary" ? COLORS.secondary : COLORS.primary}]} onPress={onPress}>
             <Text style={styles.text}>{title}</Text>
         </TouchableOpacity>
     );
@@ -13,7 +13,7 @@ function AppButton({title, onPress, color = "primary"}) {
 const styles = StyleSheet.create({
     button: {
         backgroundColor: COLORS.primary,
-        borderRadius: 25,
+        borderRadius: 10,
         justifyContent: 'center',
         alignItems: 'center',
         padding: 15,

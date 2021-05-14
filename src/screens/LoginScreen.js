@@ -3,16 +3,18 @@ import { useDispatch } from 'react-redux';
 import { 
     StyleSheet, 
     Text, 
-    View, 
-    TextInput, 
-    Button, 
+    View,
     Alert, 
     ActivityIndicator 
 } from 'react-native';
 import axios from 'axios';
+
 import {setUser} from '../redux/actions';
 import COLORS from '../consts/colors';
 import faker from 'faker';
+import AppButton from '../components/AppButton';
+import AppTextInput from '../components/AppTextInput';
+import Screen from '../components/Screen';
 
 
 const LoginScreen = ({navigation, route}) => {
@@ -65,33 +67,31 @@ const LoginScreen = ({navigation, route}) => {
       )
     }    
     return (
-      <View style={styles.container}>  
-        <TextInput
-          style={styles.inputStyle}
-          placeholder="Email"
-          value={email}
-          onChangeText={(val) => setEmail(val)}
-        />
-        <TextInput
-          style={styles.inputStyle}
-          placeholder="Password"
-          value={password}
-          onChangeText={(val) => setPassword(val)}
-          maxLength={15}
-          secureTextEntry={true}
-        />   
-        <Button
-          color="#3740FE"
-          title="Signin"
-          onPress={() => login()}
-        />   
+      <Screen>
+        <View style={styles.container}>  
+            <AppTextInput 
+              placeholder="Email"
+              textAlign="left"
+              value={email}
+              onChangeText={(val) => setEmail(val)}
+            />
+            <AppTextInput 
+              placeholder="Password"
+              textAlign="left"
+              value={password}
+              onChangeText={(val) => setPassword(val)}
+              secureTextEntry={true}
+            />
+          
+          <AppButton title="Log in" onPress={() => login()}/>
 
-        <Text 
-          style={styles.loginText}
-          onPress={() => navigation.navigate('SignUp')}>
-          Don't have account? Click here to signup
-        </Text>                          
-      </View>
+          <Text 
+            style={styles.loginText}
+            onPress={() => navigation.navigate('SignUp')}>
+            Don't have account? Click here to signup
+          </Text>                          
+        </View>
+      </Screen>
     );
   
 }
@@ -105,7 +105,6 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     padding: 35,
-    backgroundColor: '#fff'
   },
   inputStyle: {
     width: '100%',
@@ -121,14 +120,9 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   preloader: {
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-    position: 'absolute',
+    flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#fff'
+    justifyContent: 'center'
   }
 });
 

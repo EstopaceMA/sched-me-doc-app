@@ -11,15 +11,15 @@ import {
   Image,
   Animated
 } from 'react-native';
-import Screen from '../components/Screen';
+import Screen from '../../components/Screen';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import COLORS from '../consts/colors';
-import doctors from '../consts/doctors';
+import COLORS from '../../consts/colors';
+import doctors from '../../consts/doctors';
 const {width} = Dimensions.get('screen');
 const cardWidth = width / 1.8;
 
-const HomeScreen = () => {
+const PatientHomeScreen = () => {
   const categories = ['All', 'Popular', 'Top Rated', 'Featured'];
   const [selectedCategoryIndex, setSelectedCategoryIndex] = React.useState(0);
   const [activeCardIndex, setActiveCardIndex] = React.useState(0);
@@ -230,6 +230,8 @@ const HomeScreen = () => {
   );
 };
 
+export default PatientHomeScreen;
+
 const style = StyleSheet.create({
   header: {
     marginTop: 20,
@@ -318,5 +320,3 @@ const style = StyleSheet.create({
     borderTopLeftRadius: 10,
   },
 });
-
-export default HomeScreen;
