@@ -52,13 +52,11 @@ const DoctorAppointmentScreen = () => {
       });
     }
     getMarkedDates();
-    console.log(appointments);
   },[]));
 
   const onDayPress = (day) => {
-    console.log(day);
     setDate(day);
-    setCurrentDateData(date);
+    setCurrentDateData(day);
   }
 
   const setCurrentDateData = (date) => {
