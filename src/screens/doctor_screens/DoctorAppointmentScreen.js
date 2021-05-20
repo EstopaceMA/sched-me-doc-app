@@ -44,6 +44,7 @@ const DoctorAppointmentScreen = () => {
           return forMarkedDates;
       }).then((datesMarked) => {
         setMarkedDates(datesMarked);
+        setCurrentDateData(date);
       }).catch(err => {  
         console.log(err)
       }).finally(() => {
@@ -54,12 +55,15 @@ const DoctorAppointmentScreen = () => {
     console.log(appointments);
   },[]));
 
-  
-
   const onDayPress = (day) => {
+    console.log(day);
     setDate(day);
-    const appointmentsData = appointments.filter(appointment => appointment.date == day);
-    setSelectedDateAppointment({[day]:appointmentsData});
+    setCurrentDateData(date);
+  }
+
+  const setCurrentDateData = (date) => {
+    const appointmentsData = appointments.filter(appointment => appointment.date == date);
+    setSelectedDateAppointment({[date]:appointmentsData});
   }
 
   const renderItem = (item) => {

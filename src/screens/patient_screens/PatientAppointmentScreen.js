@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useEffect} from 'react';
+import React, {useState, useCallback} from 'react';
 import {useSelector} from 'react-redux';
 import {
   View, 
@@ -52,6 +52,7 @@ const PatientAppointmentScreen = () => {
         return forMarkedDates;
     }).then((datesMarked) => {
       setMarkedDates(datesMarked);
+      setCurrentDateData(today);
     }).catch(err => {  
       console.log(err)
     }).finally(() => {
@@ -61,9 +62,13 @@ const PatientAppointmentScreen = () => {
 
   const onDayPress = (day) => {
     setDate(day);
-    setFabVisible(moment(day).isBefore(today));
-    const appointmentsData = appointments.filter(appointment => appointment.date == day);
-    setSelectedDateAppointment({[day]:appointmentsData});
+    setCurrentDateData(day);
+  }
+
+  const setCurrentDateData = (date) => {
+    setFabVisible(moment(date).isBefore(today));
+    const appointmentsData = appointments.filter(appointment => appointment.date == date);
+    setSelectedDateAppointment({[date]:appointmentsData});
   }
 
   const renderItem = (item) => {
