@@ -42,6 +42,8 @@ const DoctorSetWorkSchedScreen = ({navigation, route}) => {
   const [showEndTime, setShowEndTime] = useState(false);
   const [endTimeData, setEndTimeData] = useState("");
 
+  const [isValidEndTime, SetIsValidEndTime] = useState(false);
+
   useEffect(() => {
 
     console.log(currentUser);
@@ -49,14 +51,14 @@ const DoctorSetWorkSchedScreen = ({navigation, route}) => {
   },[])
 
   const onChangeStartTime = (event, selectedDate) => {
-    console.log(moment(selectedDate).format("HH:mm"));
+    SetIsValidEndTime(moment(selectedDate).format("HH:mm") < moment(endTime).format("HH:mm"));
     const currentDate = selectedDate || startTime;
     setShowStartTime(false);
     setStartTime(currentDate);
   };
 
   const onChangeEndTime = (event, selectedDate) => {
-    console.log(moment(selectedDate).format("HH:mm"));
+    SetIsValidEndTime(moment(startTime).format("HH:mm") < moment(selectedDate).format("HH:mm"));
     const currentDate = selectedDate || endTime;
     setShowEndTime(false);
     setEndTime(currentDate);
@@ -106,94 +108,100 @@ const DoctorSetWorkSchedScreen = ({navigation, route}) => {
   }
   return (
     <Screen>
-      <View>
-        <View style={{ flex: 1, flexDirection: 'row', alignItems:'flex-start', padding: 20 }}>
-            <TouchableWithoutFeedback onPress={showStartTimePicker}>
-                <View style={{ flex: 1, 
-                    flexDirection: 'row', 
-                    height: 50, 
-                    backgroundColor: COLORS.white, 
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    marginRight: 10
-                }}>
-                    <Text style={{ position: 'absolute', top: 0, left: 0 }}>Start Time</Text>
-                    <View style={{ flex: 4, justifyContent:'center', alignItems:'center' }}>
-                        <TextInput
-                            style={{fontSize: 20}}
-                            placeholder="--:--"
-                            onChangeText={(val) => {setStartTimeData(val)}}
-                            underlineColorAndroid="transparent"
-                            caretHidden={true}
-                            editable={false}
-                            value={(startTime === "") ? "" :moment(startTime).format("HH:mm").toString()}
-                        />
-                    </View>
-                    <View style={{ flex: 1, justifyContent:'flex-end'}}>
-                        <Icon name="clock" size={30} color={COLORS.orange} />
-                    </View>
-                </View>
-            </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback onPress={showEndTimePicker}>
-                <View style={{ flex: 1, 
-                    flexDirection: 'row', 
-                    height: 50, 
-                    backgroundColor: COLORS.white, 
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    marginLeft: 10
-                }}>
-                    <Text style={{ position: 'absolute', top: 0, left: 0 }}>End Time</Text>
-                    <View style={{ flex: 4, justifyContent:'center', alignItems:'center' }}>
-                        <TextInput
-                            style={{fontSize: 20}}
-                            placeholder="--:--"
-                            onChangeText={(val) => {setEndTimeData(val)}}
-                            underlineColorAndroid="transparent"
-                            caretHidden={true}
-                            editable={false}
-                            value={(endTime === "") ? "" : moment(endTime).format("HH:mm").toString()}
-                        />
-                    </View>
-                    <View style={{ flex: 1, justifyContent:'flex-end'}}>
-                        <Icon name="clock" size={30} color={COLORS.orange} />
-                    </View>
-                </View>
-            </TouchableWithoutFeedback>
+      <View style={{flex: 1}}>
+        <View style={{flex: 1}}>
+          <View style={{ flex: 1, flexDirection: 'row', alignItems:'flex-start', padding: 20 }}>
+              <TouchableWithoutFeedback onPress={showStartTimePicker}>
+                  <View style={{ flex: 1, 
+                      flexDirection: 'row', 
+                      height: 50, 
+                      backgroundColor: COLORS.white, 
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      marginRight: 10
+                  }}>
+                      <Text style={{ position: 'absolute', top: 0, left: 0 }}>Start Time</Text>
+                      <View style={{ flex: 4, justifyContent:'center', alignItems:'center' }}>
+                          <TextInput
+                              style={{fontSize: 20}}
+                              placeholder="--:--"
+                              onChangeText={(val) => {setStartTimeData(val)}}
+                              underlineColorAndroid="transparent"
+                              caretHidden={true}
+                              editable={false}
+                              value={(startTime === "") ? "" :moment(startTime).format("HH:mm").toString()}
+                          />
+                      </View>
+                      <View style={{ flex: 1, justifyContent:'flex-end'}}>
+                          <Icon name="clock" size={30} color={COLORS.orange} />
+                      </View>
+                  </View>
+              </TouchableWithoutFeedback>
+              <TouchableWithoutFeedback onPress={showEndTimePicker}>
+                  <View style={{ flex: 1, 
+                      flexDirection: 'row', 
+                      height: 50, 
+                      backgroundColor: COLORS.white, 
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      marginLeft: 10
+                  }}>
+                      <Text style={{ position: 'absolute', top: 0, left: 0 }}>End Time</Text>
+                      <View style={{ flex: 4, justifyContent:'center', alignItems:'center' }}>
+                          <TextInput
+                              style={{fontSize: 20}}
+                              placeholder="--:--"
+                              onChangeText={(val) => {setEndTimeData(val)}}
+                              underlineColorAndroid="transparent"
+                              caretHidden={true}
+                              editable={false}
+                              value={(endTime === "") ? "" : moment(endTime).format("HH:mm").toString()}
+                          />
+                      </View>
+                      <View style={{ flex: 1, justifyContent:'flex-end'}}>
+                          <Icon name="clock" size={30} color={COLORS.orange} />
+                      </View>
+                      {!isValidEndTime && <Text style={{ position: 'absolute', bottom: 0, left: 0, color: COLORS.rejected }}>Must be ahead to start time</Text>}
+                  </View>
+              </TouchableWithoutFeedback>
+          </View>
+          <View style={{ flex: 1, padding: 20, marginTop: 20 }}>
+              <DropDownPicker
+                  open={open}
+                  value={value}
+                  items={items}
+                  setValue={setValue}
+                  setItems={setItems}
+                  setOpen={setOpen}
+                  searchable={false}
+                  style={{ borderRadius: 1, height: 60, borderColor: 'transparent'}}
+                  placeholder="Select interval"
+                  onChangeValue={(val) => onChangeDropdown(val)}
+              />
+          </View>
         </View>
-        <View style={{ flex: 1, padding: 20, marginTop: 20 }}>
-            <DropDownPicker
-                open={open}
-                value={value}
-                items={items}
-                setValue={setValue}
-                setItems={setItems}
-                setOpen={setOpen}
-                searchable={false}
-                style={{ borderRadius: 1, height: 60, borderColor: 'transparent'}}
-                placeholder="Select interval"
-                onChangeValue={(val) => onChangeDropdown(val)}
-            />
-        </View>
-        <ScrollView style={{ marginTop: 10 }}>
-            <View style={{ flex: 1, padding: 20, marginTop: 30 }}>
-                <View style={{flex: 1, justifyContent:'space-between', flexDirection: 'row', flexWrap: 'wrap'}}>
-                    {
-                        timeSlots.map((val, index) => (
-                            <View 
-                                key={index} 
-                                style={styles.timeSlot}
-                            >
-                                <View style={{ flex: 1, justifyContent:'center', alignItems:'center' }}>
-                                    <Text style={{ fontSize: 20, fontWeight: 'bold' }}>{val}</Text>
-                                </View>   
-                            </View>
-                        ))
-                    }
+        <View style={{ marginTop: 30, flex: 5, padding: 20 }}>
+          <View style={{ flex: 5, backgroundColor: COLORS.white, padding: 20, borderRadius: 12 }}>
+            <ScrollView >
+                <View style={{ flex: 1 }}>
+                    <View style={{flex: 1, justifyContent:'space-between', flexDirection: 'row', flexWrap: 'wrap'}}>
+                        {
+                            timeSlots.map((val, index) => (
+                                <View 
+                                    key={index} 
+                                    style={styles.timeSlot}
+                                >
+                                    <View style={{ flex: 1, justifyContent:'center', alignItems:'center' }}>
+                                        <Text style={{ fontSize: 20, fontWeight: 'bold' }}>{val}</Text>
+                                    </View>   
+                                </View>
+                            ))
+                        }
+                    </View>
                 </View>
-            </View>
-        </ScrollView>
-        <View style={{ flex: 1, padding: 20, marginTop: 20, justifyContent:'flex-end' }}>
+            </ScrollView>
+          </View>
+          <View style={{ flex: 1, marginTop: 20, justifyContent:'flex-end' }}>
             <TouchableOpacity
                 activeOpacity={1}
                 onPress={() => {onSaveSched()}}
@@ -204,6 +212,7 @@ const DoctorSetWorkSchedScreen = ({navigation, route}) => {
                     </Text>
                 </View>
             </TouchableOpacity>
+          </View>
         </View>
       </View>
 
@@ -233,11 +242,12 @@ export default DoctorSetWorkSchedScreen;
 
 const styles = StyleSheet.create({
     timeSlot: {
-        textAlign: 'center',
-        width: 120, 
-        height: 50, 
-        backgroundColor: 'powderblue', 
-        marginBottom: 10
+      borderRadius: 10,
+      textAlign: 'center',
+      width: 120, 
+      height: 50, 
+      backgroundColor: 'powderblue', 
+      marginBottom: 10
     },
     btn: {
       height: 55,
